@@ -1,0 +1,30 @@
+class Solution:
+    def splitListToParts(self, head: Optional[ListNode], k: int) -> List[Optional[ListNode]]:
+        # Calculate the length of the linked list
+        length = 0
+        current = head
+        while current:
+            length += 1
+            current = current.next
+
+        # Determine the base size and the number of parts that will have one extra node
+        base_size = length // k
+        extra_nodes = length % k
+
+        # Initialize the result array
+        result = [None] * k
+
+        # Split the linked list into parts
+        current = head
+        prev = None
+        for i in range(k):
+            result[i] = current
+            part_size = base_size + (1 if extra_nodes > 0 else 0)
+            for j in range(part_size):
+                prev = current
+                current = current.next
+            if prev:
+                prev.next = None
+            extra_nodes -= 1
+
+        return result

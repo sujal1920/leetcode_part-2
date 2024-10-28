@@ -1,0 +1,34 @@
+class Node:
+  def __init__(self, start,end):
+    self.s = start
+    self.e = end
+    self.l = self.r = None
+
+  def insert(self, start, end):
+    if self.s >= end: 
+      if not self.l:
+        self.l  = Node(start,end)
+        return True
+      return self.l.insert(start, end)
+    elif self.e <= start:
+      if not self.r:
+        self.r = Node(start, end)
+        return True
+      return self.r.insert(start,end)
+
+    return False
+      
+
+class MyCalendar:
+
+    def __init__(self):
+      self.root = None
+        
+
+    def book(self, start: int, end: int) -> bool:
+      if not self.root: 
+        self.root = Node(start,end)
+        return True
+      else:
+        return self.root.insert(start, end)
+        

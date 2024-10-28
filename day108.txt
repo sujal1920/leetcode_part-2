@@ -1,0 +1,73 @@
+class CustomStack:
+
+    def __init__(self, maxSize: int):
+        self.maxSize = maxSize
+        self.stack = []
+        self.inc = [0] * maxSize  # To keep track of increments for each element
+
+    def push(self, x: int) -> None:
+        if len(self.stack) < self.maxSize:
+            self.stack.append(x)
+
+    def pop(self) -> int:
+        if not self.stack:
+            return -1
+        
+        # Get the index of the top element
+        index = len(self.stack) - 1
+        
+        # Add the increment value of the current top to the element before popping
+        if index > 0:
+            self.inc[index - 1] += self.inc[index]
+        
+        # Pop the element and also get the increment value
+        result = self.stack.pop() + self.inc[index]
+        self.inc[index] = 0  # Reset the increment for this index
+        
+        return result
+
+    def increment(self, k: int, val: int) -> None:
+        # Get the actual index up to which elements need to be incremented
+        index = min(k, len(self.stack)) - 1
+        if index >= 0:
+            self.inc[index] += val
+
+
+# Your CustomStack object will be instantiated and called as such:
+# obj = CustomStack(maxSize)
+# obj.push(x)
+# param_2 = obj.pop()
+# obj.increment(k,val)class CustomStack:
+
+    def __init__(self, maxSize: int):
+        self.maxSize = maxSize
+        self.stack = []
+        self.inc = [0] * maxSize  # To keep track of increments for each element
+
+    def push(self, x: int) -> None:
+        if len(self.stack) < self.maxSize:
+            self.stack.append(x)
+
+    def pop(self) -> int:
+        if not self.stack:
+            return -1
+        
+        # Get the index of the top element
+        index = len(self.stack) - 1
+        
+        # Add the increment value of the current top to the element before popping
+        if index > 0:
+            self.inc[index - 1] += self.inc[index]
+        
+        # Pop the element and also get the increment value
+        result = self.stack.pop() + self.inc[index]
+        self.inc[index] = 0  # Reset the increment for this index
+        
+        return result
+
+    def increment(self, k: int, val: int) -> None:
+        # Get the actual index up to which elements need to be incremented
+        index = min(k, len(self.stack)) - 1
+        if index >= 0:
+            self.inc[index] += val
+

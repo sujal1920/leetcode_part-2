@@ -1,0 +1,77 @@
+from collections import defaultdict
+
+class Solution:
+    def robotSim(self, commands: List[int], obstacles: List[List[int]]) -> int:
+        # One full pass to turn commands into tuple (dir, len)
+        # ordered obstacles for better searchability
+        at_x = defaultdict(list)
+        at_y = defaultdict(list)
+        for obs in obstacles:
+            at_x[obs[0]].append(obs[1])
+            at_y[obs[1]].append(obs[0])
+        
+        cur_dir_x = 0
+        coords = (0,0)
+        max_dist = 0
+        for com in commands:
+
+            if com == -2:
+                cur_dir_x = (cur_dir_x - 1) % 4 
+                continue
+            if com == -1:
+                cur_dir_x = (cur_dir_x + 1) % 4
+                continue
+
+                
+            # we are moving in a given direction...
+            if cur_dir_x == 0 or cur_dir_x == 2:
+                # move up or down
+                relevant_obstacles = at_x[coords[0]]
+                #print(relevant_obstacles)
+                if relevant_obstacles:
+                    if cur_dir_x == 0:
+                        # get the closest obstacle north of coords[0]
+                        closest = 10**6
+                        for rel_obs in relevant_obstacles:      
+                            if rel_obs > coords[1]:
+                                closest = min(closest, rel_obs)
+                        coords = (coords[0], min(coords[1] + com, closest - 1))
+                    else:
+                        # get the closest obstacle south of coords[0]
+                        closest = -10**6
+                        for rel_obs in relevant_obstacles:
+                            if rel_obs < coords[1]:
+                                closest = max(closest, rel_obs)
+                        coords = (coords[0], max(coords[1] - com, closest + 1))
+                else:
+                    # no obstacle
+                    com = com if cur_dir_x == 0 else -com
+                    coords = (coords[0], coords[1] + com)
+            else:
+                # move left or right
+                relevant_obstacles = at_y[coords[1]]
+                if relevant_obstacles:
+                    if cur_dir_x == 1:
+                        # get the closest obstacle east of coords[1]
+                        closest = 10**6
+                        for rel_obs in relevant_obstacles:
+                            if rel_obs > coords[0]:
+                                closest = min(closest, rel_obs)
+                        coords = (min(coords[0] + com, closest - 1), coords[1])
+                    else: 
+                        # west
+                        closest = -10**6
+                        for rel_obs in relevant_obstacles:
+                            if rel_obs < coords[0]:
+                                closest = max(closest, rel_obs)
+                        coords = (max(coords[0] - com, closest + 1), coords[1])
+                else:
+                    com = com if cur_dir_x == 1 else -com
+                    coords = (coords[0] + com, coords[1])
+
+            max_dist = max(max_dist, coords[0]**2 + coords[1]**2)
+            #print(coords)
+        
+
+        return max_dist
+                        

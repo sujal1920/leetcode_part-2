@@ -1,0 +1,16 @@
+class Solution:
+    def minAddToMakeValid(self, s: str) -> int:
+        need = 0 # number neede for ')'
+        res = 0
+
+        for p in s:
+            if p == '(':
+                need += 1
+            
+            if p == ')':
+                need -= 1
+
+                if need == -1:
+                    res += 1
+                    need = 0
+        return res + need

@@ -1,0 +1,21 @@
+class Solution:
+    def insertGreatestCommonDivisors(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+
+        def gcd(a,b):
+            while b:
+                a,b = b , a%b
+            return a     
+
+        curr = head
+        while curr.next is not None:
+            ncurr = curr.next
+            value = gcd(curr.val,ncurr.val)
+            new = ListNode(value)
+            curr.next = new
+            new.next = ncurr
+            curr = ncurr
+        return head    
+
+        

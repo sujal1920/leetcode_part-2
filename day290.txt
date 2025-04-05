@@ -1,0 +1,9 @@
+class Solution(object):
+    def subsetXORSum(self, nums):
+        res = 0
+
+        for num in nums:
+            res |= num
+
+        return res << (len(nums) - 1)
+        

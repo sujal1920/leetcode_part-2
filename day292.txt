@@ -1,0 +1,18 @@
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        if sum(nums) % 2 != 0:
+            return False
+        dpSet = set()
+        target = sum(nums) / 2
+        for i in nums:
+            if i == target:
+                return True
+            tempDP = {i}
+            for j in dpSet:
+                if i + j == target:
+                    return True
+                if i + j not in dpSet:
+                    tempDP.add(i + j)
+            dpSet.update(tempDP)
+        return False
+        

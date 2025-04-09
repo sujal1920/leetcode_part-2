@@ -1,0 +1,8 @@
+class Solution:
+    def minOperations(self, nums: List[int], k: int) -> int:
+        unrp = set(nums)
+        min_= min(unrp)
+        if min_ < k:
+            return -1
+        
+        return len(unrp) + (0 if min_ > k else -1)
